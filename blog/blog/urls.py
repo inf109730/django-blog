@@ -13,9 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from djangoBlog import views as blog
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-]
+    url(r'^$', blog.index, name="index"),  # main page
+    url(r'^blog/$', blog.user_blog, name="user_blog"),  # user's blog
+    url(r'^blog/(?P<blog_id>\d+)/$', blog.another_blog, name="another_blog"),  # another user's blog
+    url(r'^article/(?P<article_id>\d+)/$', blog.article, name="article"),   # article
+    url(r'^tag/(?P<tag_name>[\w|\W]+)/$', blog.tag, name="tag"),    # tag
+    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
