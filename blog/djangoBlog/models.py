@@ -4,13 +4,24 @@ from django.utils import timezone
 
 
 class Blog(models.Model):
+    STYLES = (
+        ('Cerulean', 'Cerulean'),
+        ('Darkly', 'Darkly'),
+        ('Superhero', 'Superhero'),
+    )
     user = models.OneToOneField(User, related_name="account")
     header = models.ImageField(default='blank_header.jpg')
     about = models.TextField(null=True, blank=True)
+    style = models.CharField(max_length=20, choices=STYLES, default="Cerulean")
 
 
 class Tag(models.Model):
     value = models.CharField(max_length=100)
+
+
+class Image(models.Model):
+    description = models.CharField(max_length=200)
+    image = models.ImageField()
 
 
 class Article(models.Model):

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load tag_library %}
+
+{% block content %}
+<div class="text-center title-container">
+    <h2 class="title">{{ book.title }}</h2>
+</div>
+<div>
+    <div class="col-md-4">
+        <img src={{ book.cover.url }} width="300" height="440"/>
+        <h4><strong>Information</strong></h4><hr>
+        <p><strong>Author: </strong><a href="/author/{{ book.author }}">{{ book.author }}</a></p>
+        <p><strong>Series: </strong><a href="/series/{{ book.series.name }}">{{ book.series.name }}</a></p>
+        <p><strong>Genres: </strong>
+            {% for genre in genres %}
+                <a href="/genre/{{ genre.genre.value }}">{{ genre.genre.value }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        <p><strong>Published: </strong>{{ book.publish_date }}</p>
+    </div>
+    <div class="col-md-8">
+        <h4><strong>Score</strong></h4><hr>
+        <div class="row">
+            <div class="col-md-3">
+                <h3><strong>{{ score.avg|default:None }}/5</strong></h3>
+                <p>Votes: {{ score.votes|default:0 }}</p>
+            </div>
+            <div class="col-md-3">
+                <p>Rate</p>
+                <form action="." method="post">
+                    {% csrf_token %}
+                    <fieldset {% if not user.is_authenticated %}disabled{% endif %}>
+                        <select class="form-control" name="score" onchange="this.form.submit()">
+                            <option>None</option>
+                            {% for i in '012345'|make_list %}
+                            {% if i|to_int == userinfo.bookscore.score %}
+                                <option selected>{{ i }}</option>
+                            {% else %}
+                                <option>{{ i }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-md-2">
+                <p>Want: {{ users.wants|default:0 }}</p>
+                <form action="." method="post">
+                    {% csrf_token %}
+                    <fieldset {% if not user.is_authenticated %}disabled{% endif %}>
+                        <input class="btn btn-primary {% if userinfo.want %}btn-negate{% endif %}" type="submit" name="want" value="Want"/>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-md-2">
+                <p>Own: {{ users.owns|default:0 }}</p>
+                <form action="." method="post">
+                    {% csrf_token %}
+                    <fieldset {% if not user.is_authenticated %}disabled{% endif %}>
+                        <input class="btn btn-primary {% if userinfo.own %}btn-negate{% endif %}" type="submit" name="own" value="Own"/>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-md-2">
+                <p>Read: {{ users.reads|default:0 }}</p>
+                <form action="." method="post">
+                    {% csrf_token %}
+                    <fieldset {% if not user.is_authenticated %}disabled{% endif %}>
+                        <input class="btn btn-primary {% if userinfo.read %}btn-negate{% endif %}" type="submit" name="read" value="Read"/>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <h4><strong>Description</strong></h4><hr>
+        <p>{{ book.description }}</p><br/>
+
+        <div class="comments">
+            <h4><strong>Comments</strong></h4><hr>
+            {% if user.is_authenticated %}
+            <form id="comment-box" class="comment_form" method="post" action=".">
+                {% csrf_token %}
+                <input class="hidden" name="user" value={{ user.id }}>
+                <input class="hidden" name="book" value={{ book.id }}>
+                <input class="btn btn-primary submit-right" type="submit" value="Submit"/>
+                <div class="textarea-button">
+                    <textarea class="comment_area" name="content" type="text" required placeholder="Your comment"></textarea>
+                </div>
+            </form>
+            {% endif %}
+            <table class="table table-striped">
+            {% for comment in comments %}
+                <tr class="comment">
+                    <td width="10%"><img src={{ comment.user.account.avatar.url }} width="40" height="40"/></td>
+                    <td><a href="/user/{{ comment.user.id }}">{{ comment.user }}</a></td>
+                    <td><div class="date">{{ comment.created_date|timesince }} ago</div></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><p>{{ comment.content|linebreaks }}</p></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <p>Be first to comment!</p>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% load i18n %}
+
+{% load staticfiles %}
+
+{% load bootstrap3 %}
+{% load bootstrap_themes %}
+
+{% bootstrap_styles theme="cerulean" type='min.css' %}
+
+{% block bootstrap3_extra_head %}
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400&amp;subset=latin-ext" rel="stylesheet"/>
+<link href="{% static 'base/css/style.css' %}" rel="stylesheet"/>
+<link href="{% static 'bootstrap/bootstrap-social.css' %}" rel="stylesheet"/>
+<link href="{% static 'bootstrap/assets/css/font-awesome.css' %}" rel="stylesheet"/>
+<link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"/>
+<script src="https://code.jquery.com/jquery-1.12.4.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block bootstrap3_content %}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">BlogBlog</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li><a href="/news/">News</a></li>
+                <li><a href="/user/">Account</a></li>
+                <li><a href="/accounts/logout">Logout</a></li>
+                {% else %}
+                <li><a href="/accounts/login">Login</a></li>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+{% endblock %}
+
+{% bootstrap_messages %}
+
+<div class="container">
+    <div class="starter-template">
+        <!-- content -->
+        {% block content %}
+        {% endblock %}
+    </div>
+</div><!-- /.container -->

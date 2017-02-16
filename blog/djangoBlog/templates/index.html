@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="col-md-7">
+    <h2 class="title">Newest articles</h2><hr>
+    {% for article in articles %}
+    <h4><a href="">{{article.title}}</a></h4>
+    <p>{{article.content|slice:":255"|safe }}</p>
+    <p>Viewed: {{article.views}} times</p>
+    <div>
+        Tags:
+        {% for tag in article.tag_list %}
+            <a href="">{{tag.value}} </a>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+<div class="col-md-5">
+    <h2 class="title">News</h2><hr>
+    {% for news_inst in news %}
+    <h4>{{ news_inst.title }}</h4>
+    <p>{{ news_inst.content }}</p>
+    <hr>
+    {% endfor %}
+</div>
+
+{% endblock %}
