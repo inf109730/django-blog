@@ -92,18 +92,30 @@ def add_article(request):
         return redirect("/accounts/login")
 
     blog = Blog.objects.get(user=user)
+    tags = Tag.objects.all()
 
     if request.method == "POST":
         title = request.POST.get('title')
         content = request.POST.get('content')
-        tags = request.POST.get('tags')
+        new_article = Article(title=title, content=content, blog=blog)
+        new_article.save()
+        tags = list(set(request.POST.getlist('tags[]')))
+        for tag in tags:
+            if not Tag.objects.filter(value=tag).exists():
+                Tag(tag).save()
 
-        return redirect("/blog")
+            tag_inst = Tag.objects.get(value=tag)
+            new_article.tags.add(tag_inst)
+
+        new_article.save()
+
+        return redirect("/profile")
 
     if request.method == "GET":
         template = loader.get_template("add_article.html")
         context = {
-            'blog': blog
+            'blog': blog,
+            'tags': tags
         }
 
         return HttpResponse(template.render(context, request))

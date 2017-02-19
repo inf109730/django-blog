@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^blog/(?P<blog_id>\d+)/$', blog.another_blog, name="another_blog"),  # another user's blog
     url(r'^article/(?P<article_id>\d+)/$', blog.article, name="article"),   # article
     url(r'^tag/(?P<tag_id>[\w|\W]+)/$', blog.tag, name="tag"),    # tag
-    url(r'^add_artcle', blog.add_article, name="add_article"),    # add article
+    url(r'^add-article', blog.add_article, name="add_article"),    # add article
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'', include('social.apps.django_app.urls', namespace='social')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

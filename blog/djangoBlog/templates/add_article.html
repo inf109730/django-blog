@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
 
-</body>
-</html>
+{% block content %}
+<script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+<script>tinymce.init({ selector:'textarea' });</script>
+<script>
+    let getArticleContent = function() {
+        return tinyMCE.activeEditor.getContent({format : 'html'});
+    }
+
+    let addNewTag = function() {
+        let tags = document.getElementById("tags");
+        let tag = prompt("Please enter new tag", "Here");
+
+        if (tag != null && tags) {
+            var option = document.createElement("option");
+            option.text = tag;
+            option.selected="selected";
+            tags.add(option, tag);
+        }
+    }
+</script>
+
+<form action="/add-article" method="post" enctype="multipart/form-data">
+     {% csrf_token %}
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" style="margin-bottom:1em;width:30%;"/><br>
+    <textarea id="content" name="content">Insert article</textarea><br>
+    <label for="tags" style="margin-top:1em;">Tags:</label><br>
+    <select multiple id="tags" name="tags[]" class="tag-select">
+
+    </select><br>
+    <button class="btn btn-primary" type=button onclick="addNewTag()">New tag</button>
+    <br>
+    <input type="submit" class="btn btn-primary submit-right"
+           name="submit" style="margin-top:1em;" value="Add Article"/>
+</form>
+{% endblock %}

@@ -1,7 +1,14 @@
 select {
     color:black;
+
 }
 
 button {
     color:black;
+}
+
+#tags {
+    overflow-y: auto;
+    width: 15%;
+    min-height: 25%;
 }
