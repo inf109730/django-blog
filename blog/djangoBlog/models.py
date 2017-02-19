@@ -37,6 +37,7 @@ class Article(models.Model):
     content = models.TextField()
     publish_date = models.DateField(default=timezone.now)
     tags = models.ManyToManyField(Tag)
+    images = models.ManyToManyField(Image)
     blog = models.ForeignKey(Blog)
 
     def __str__(self):

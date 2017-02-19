@@ -22,9 +22,9 @@ from django.conf import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', blog.index, name="index"),  # main page
-    url(r'^blog/$', blog.user_blog, name="user_blog"),  # user's blog
-    url(r'^profile/$', blog.profile, name="user_profile"),  # user's blog
-    url(r'^blog/(?P<blog_id>\d+)/$', blog.another_blog, name="another_blog"),  # another user's blog
+    url(r'^profile/$', blog.profile, name="user_profile"),  # user's blog setting
+    url(r'^blog/$', blog.my_blog, name="my_blog"),  # blog
+    url(r'^blog/(?P<blog_id>\d+)/$', blog.blog, name="another_blog"),  # blog
     url(r'^article/(?P<article_id>\d+)/$', blog.article, name="article"),   # article
     url(r'^tag/(?P<tag_id>[\w|\W]+)/$', blog.tag, name="tag"),    # tag
     url(r'^add-article', blog.add_article, name="add_article"),    # add article

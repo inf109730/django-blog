@@ -1,15 +1,16 @@
 <div class="col-md-7">
     <hr>
     {% for article in articles %}
-    <h4><a href="article/{{article.id}}">{{article.title}}</a></h4>
+    <h4><a href="/article/{{article.id}}">{{article.title}}</a></h4>
     <p>{{article.content|slice:":255"|safe }}</p>
-    <p>Viewed: {{article.views}} times</p>
+    <div>Viewed: {{article.views}} times</div>
     <div>
         Tags:
         {% for tag in article.tag_list %}
-            <a href="tag/{{tag.value}}">{{tag.value}} </a>
+            <a href="/tag/{{tag.value}}">{{tag.value}} </a>
         {% endfor %}
     </div>
+    <p>Images: {{images|length}}</p>
     <hr style="margin:2em;">
     {% endfor %}
 </div>

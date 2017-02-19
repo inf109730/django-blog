@@ -21,17 +21,33 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def user_blog(request):
-    pass
+def my_blog(request):
+    blog_inst = Blog.objects.get(user=request.user)
+    return blog(request, blog_inst.id)
 
 
-def another_blog(request, blog_id):
-    pass
+def blog(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+    articles = Article.objects.all().filter(blog=blog).order_by('-publish_date').annotate(views=Count('view'))[:5]
+
+    for article in articles:
+        article.tag_list = article.tags.all()
+
+    template = loader.get_template("blog.html")
+    context = {
+       'articles': articles,
+       'blog': blog,
+       'header': str(blog.user) + "'s blog",
+       'header_url': "/blog/" + str(blog.id),
+       'fb_url': "localhost:8000" + request.get_full_path()
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def article(request, article_id):
     article_inst = Article.objects.get(pk=article_id)
     article_inst.tag_list = article_inst.tags.all()
+    images = Image.objects.all().filter(article=article_inst)
     blog = article_inst.blog
     view = View(article=article_inst)
     view.save()
@@ -40,6 +56,7 @@ def article(request, article_id):
     context = {
         'article': article_inst,
         'blog': blog,
+        'images': images,
         'header': str(blog.user) + "'s blog",
         'header_url': "/blog/" + str(blog.id),
         'fb_url': "localhost:8000" + request.get_full_path()

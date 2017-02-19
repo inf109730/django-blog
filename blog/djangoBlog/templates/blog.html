@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="title">Newest articles</h2>
+{% include "article_list.html" %}
+<div class="col-md-5">
+    <h2 class="title">About this blog</h2>
+    <div>{{blog.about}}</div>
+</div>
+<div class="col-md-5">
+    <h2 class="title">Most viewed on {{blog.user}}'s blog</h2><hr>
+    {% include "most_viewed.html" %}
+</div>
+{% include "like.html" %}
+{% endblock %}
