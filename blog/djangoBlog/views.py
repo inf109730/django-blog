@@ -115,6 +115,8 @@ def add_article(request):
     if request.method == "POST":
         title = request.POST.get('title')
         content = request.POST.get('content')
+        image_desc = request.POST.get('image1Desc')
+        image = request.POST.get('image1')
         new_article = Article(title=title, content=content, blog=blog)
         new_article.save()
         tags = list(set(request.POST.getlist('tags[]')))
@@ -124,6 +126,14 @@ def add_article(request):
 
             tag_inst = Tag.objects.get(value=tag)
             new_article.tags.add(tag_inst)
+
+        if image_desc is not None and len(request.FILES) != 0:
+            img_data = request.FILES['image1']
+            img = Image(description=image_desc)
+            img.save()
+            img.image = img_data
+            img.save()
+            new_article.images.add(img)
 
         new_article.save()
 
