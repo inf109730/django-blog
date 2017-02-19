@@ -7,11 +7,13 @@ from django.shortcuts import redirect
 
 
 def index(request):
-    article_list = Article.objects.all().order_by('-publish_date').annotate(views=Count('view'))[:5]
+    article_list = Article.objects.all().order_by('-publish_date')\
+                       .annotate(views=Count('view', distinct=True))[:5]
     news = News.objects.all().order_by('-created_date')[:5]
 
     for article_inst in article_list:
         article_inst.tag_list = article_inst.tags.all()
+        article_inst.imagesCount = Image.objects.filter(article=article_inst).count()
 
     template = loader.get_template("index.html")
     context = {

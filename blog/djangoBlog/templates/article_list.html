@@ -2,7 +2,6 @@
     <hr>
     {% for article in articles %}
     <h4><a href="/article/{{article.id}}">{{article.title}}</a></h4>
-    <p>{{article.content|slice:":255"|safe }}</p>
     <div>Viewed: {{article.views}} times</div>
     <div>
         Tags:
@@ -10,7 +9,7 @@
             <a href="/tag/{{tag.value}}">{{tag.value}} </a>
         {% endfor %}
     </div>
-    <p>Images: {{imagesCount}}</p>
+    <p>Images: {{article.imagesCount}}</p>
     <hr style="margin:2em;">
     {% endfor %}
 </div>
