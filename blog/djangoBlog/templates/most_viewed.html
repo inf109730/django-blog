@@ -1,0 +1,29 @@
+<script>
+    showTab = function(tab) {
+        let weekTab = document.getElementById("week");
+        let monthTab = document.getElementById("month");
+        let allTab = document.getElementById("all");
+        if(tab == "week") {
+            weekTab.style.display = "block"
+            monthTab.style.display = "none"
+            allTab.style.display = "none"
+        } else if (tab == "month") {
+            monthTab.style.display = "block"
+            weekTab.style.display = "none"
+            allTab.style.display = "none"
+        } else if (tab == "all") {
+            allTab.style.display = "block"
+            weekTab.style.display = "none"
+            monthTab.style.display = "none"
+        }
+    }
+</script>
+
+<span class="most_viewed_tab" onclick="showTab('week')">This week</span>
+<span class="most_viewed_tab" onclick="showTab('month')">This month</span>
+<span class="most_viewed_tab" onclick="showTab('all')">All time</span>
+<div id="most_viewed">
+    <div id="week">Test week</div>
+    <div id="month" style="display:none;">Test month</div>
+    <div id="all" style="display:none;">Test all</div>
+</div>

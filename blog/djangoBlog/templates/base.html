@@ -5,7 +5,11 @@
 {% load bootstrap3 %}
 {% load bootstrap_themes %}
 
-{% bootstrap_styles theme="cerulean" type='min.css' %}
+{% if blog %}
+    {% bootstrap_styles theme=blog.style type='min.css' %}
+{% else %}
+    {% bootstrap_styles theme="cerulean" type='min.css' %}
+{% endif %}
 
 {% block bootstrap3_extra_head %}
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400&amp;subset=latin-ext" rel="stylesheet"/>
@@ -22,14 +26,18 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">BlogBlog</a>
+            {% if header %}
+               <a class="navbar-brand" href="/">BlogBlog -</a> <a class="navbar-brand" href="{{header_url}}">{{header}}</a>
+            {% else %}
+                <a class="navbar-brand" href="/">BlogBlog</a>
+            {% endif %}
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                <li><a href="/news/">News</a></li>
-                <li><a href="/user/">Account</a></li>
+                <li><a href="/blog/">My Blog</a></li>
+                <li><a href="/profile/">Edit Blog</a></li>
                 <li><a href="/accounts/logout">Logout</a></li>
                 {% else %}
                 <li><a href="/accounts/login">Login</a></li>

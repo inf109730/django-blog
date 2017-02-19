@@ -8,6 +8,8 @@ class Blog(models.Model):
         ('Cerulean', 'Cerulean'),
         ('Darkly', 'Darkly'),
         ('Superhero', 'Superhero'),
+        ('Cosmo', 'Cosmo'),
+        ('Slate', 'Slate'),
     )
     user = models.OneToOneField(User, related_name="account")
     header = models.ImageField(default='blank_header.jpg')
@@ -18,10 +20,16 @@ class Blog(models.Model):
 class Tag(models.Model):
     value = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.value
+
 
 class Image(models.Model):
     description = models.CharField(max_length=200)
     image = models.ImageField()
+
+    def __str__(self):
+        return self.description
 
 
 class Article(models.Model):
@@ -30,6 +38,9 @@ class Article(models.Model):
     publish_date = models.DateField(default=timezone.now)
     tags = models.ManyToManyField(Tag)
     blog = models.ForeignKey(Blog)
+
+    def __str__(self):
+        return self.title
 
 
 class Comment(models.Model):
@@ -48,3 +59,6 @@ class News(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title

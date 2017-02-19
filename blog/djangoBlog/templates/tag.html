@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="title">Newest article with tag: {{tag.value}}</h2>
+{% include "article_list.html" %}
+{% endblock %}
