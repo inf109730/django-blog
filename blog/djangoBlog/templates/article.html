@@ -7,7 +7,7 @@
     <div>Published on: {{article.publish_date}}</div>
     <div>Tags:
         {% for tag in article.tag_list %}
-            <a href="/tag/{{tag.id}}">{{tag.value}} </a>
+            <a href="/tag/{{tag.value}}">{{tag.value}} </a>
         {% endfor %}</div>
     <hr>
     <div>
@@ -22,4 +22,5 @@
     <h2 class="title">Most viewed on {{blog.user}}'s blog</h2><hr>
     {% include "most_viewed.html" %}
 </div>
+{% include "like.html" %}
 {% endblock %}

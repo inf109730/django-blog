@@ -1,59 +1,86 @@
+<!doctype html>
 {% load i18n %}
 
 {% load staticfiles %}
 
 {% load bootstrap3 %}
 {% load bootstrap_themes %}
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        {% if blog %}
+            <title>BlogBlog - {{blog.user}} </title>
+        {% else %}
+            <title>BlogBlog</title>
+        {% endif %}
+        <meta name="description" content="BlogBlog">
+        {% if fb_url %}
+            <meta property="og:url" content="{{fb_uri}}" />
+        {% else %}
+            <meta property="og:url" content="localhost:8000" />
+        {% endif %}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="BlogBlog" />
+        {% if blog %}
+            <meta property="og:description" content="{{blog.about}}" />
+        {% else %}
+            <meta property="og:description" content="BlogBlog is the best place for your personal blog" />
+        {% endif %}
+        <meta property="og:image" content="" />
+    </head>
+    <body>
+        {% if blog %}
+            {% bootstrap_styles theme=blog.style type='min.css' %}
+        {% else %}
+            {% bootstrap_styles theme="cerulean" type='min.css' %}
+        {% endif %}
 
-{% if blog %}
-    {% bootstrap_styles theme=blog.style type='min.css' %}
-{% else %}
-    {% bootstrap_styles theme="cerulean" type='min.css' %}
-{% endif %}
-
-{% block bootstrap3_extra_head %}
-<link href="https://fonts.googleapis.com/css?family=Lato:300,400&amp;subset=latin-ext" rel="stylesheet"/>
-<link href="{% static 'base/css/style.css' %}" rel="stylesheet"/>
-<link href="{% static 'bootstrap/bootstrap-social.css' %}" rel="stylesheet"/>
-<link href="{% static 'bootstrap/assets/css/font-awesome.css' %}" rel="stylesheet"/>
-<link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"/>
-<script src="https://code.jquery.com/jquery-1.12.4.js" type="text/javascript"></script>
-<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-{% endblock %}
-
-{% block bootstrap3_content %}
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            {% if header %}
-               <a class="navbar-brand" href="/">BlogBlog -</a> <a class="navbar-brand" href="{{header_url}}">{{header}}</a>
-            {% else %}
-                <a class="navbar-brand" href="/">BlogBlog</a>
-            {% endif %}
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
-                <li><a href="/blog/">My Blog</a></li>
-                <li><a href="/profile/">Edit Blog</a></li>
-                <li><a href="/accounts/logout">Logout</a></li>
-                {% else %}
-                <li><a href="/accounts/login">Login</a></li>
-                {% endif %}
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
-{% endblock %}
-
-{% bootstrap_messages %}
-
-<div class="container">
-    <div class="starter-template">
-        <!-- content -->
-        {% block content %}
+        {% block bootstrap3_extra_head %}
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400&amp;subset=latin-ext" rel="stylesheet"/>
+        <link href="{% static 'base/css/style.css' %}" rel="stylesheet"/>
+        <link href="{% static 'bootstrap/bootstrap-social.css' %}" rel="stylesheet"/>
+        <link href="{% static 'bootstrap/assets/css/font-awesome.css' %}" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"/>
+        <script src="https://code.jquery.com/jquery-1.12.4.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
         {% endblock %}
-    </div>
-</div><!-- /.container -->
+
+        {% block bootstrap3_content %}
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    {% if header %}
+                       <a class="navbar-brand" href="/">BlogBlog -</a> <a class="navbar-brand" href="{{header_url}}">{{header}}</a>
+                    {% else %}
+                        <a class="navbar-brand" href="/">BlogBlog</a>
+                    {% endif %}
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if user.is_authenticated %}
+                        <li><a href="/blog/">My Blog</a></li>
+                        <li><a href="/profile/">Edit Blog</a></li>
+                        <li><a href="/accounts/logout">Logout</a></li>
+                        {% else %}
+                        <li><a href="/accounts/login">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        {% endblock %}
+
+        {% bootstrap_messages %}
+
+        <div class="container">
+            <div class="starter-template">
+                <!-- content -->
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div><!-- /.container -->
+    </body>
+</html>

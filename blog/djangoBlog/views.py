@@ -7,8 +7,8 @@ from django.shortcuts import redirect
 
 
 def index(request):
-    article_list = Article.objects.all().annotate(views=Count('view'))[:5]
-    news = News.objects.all()[:5]
+    article_list = Article.objects.all().order_by('-publish_date').annotate(views=Count('view'))[:5]
+    news = News.objects.all().order_by('-created_date')[:5]
 
     for article_inst in article_list:
         article_inst.tag_list = article_inst.tags.all()
@@ -41,14 +41,15 @@ def article(request, article_id):
         'article': article_inst,
         'blog': blog,
         'header': str(blog.user) + "'s blog",
-        'header_url': "/blog/" + str(blog.id)
+        'header_url': "/blog/" + str(blog.id),
+        'fb_url': "localhost:8000" + request.get_full_path()
     }
     return HttpResponse(template.render(context, request))
 
 
 def tag(request, tag_id):
     articles = Article.objects.all().filter(tags=tag_id).order_by('-publish_date')
-    tag = Tag.objects.get(id=tag_id)
+    tag = Tag.objects.get(value=tag_id)
     template = loader.get_template("tag.html")
     context = {
         'articles': articles,

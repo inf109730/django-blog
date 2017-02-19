@@ -7,8 +7,9 @@
     <div>
         Tags:
         {% for tag in article.tag_list %}
-            <a href="tag/{{tag.id}}">{{tag.value}} </a>
+            <a href="tag/{{tag.value}}">{{tag.value}} </a>
         {% endfor %}
     </div>
+    <hr style="margin:2em;">
     {% endfor %}
 </div>

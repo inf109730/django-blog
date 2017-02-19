@@ -1,0 +1,8 @@
+<div class="col-md-5">
+    <h2 class="title">Like this page!</h2>
+    {% if fb_url %}
+    <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2F{{fb_url}}&width=120&layout=box_count&action=like&show_faces=true&share=true&height=80&appId" width="240" height="120" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+    {% else %}
+    <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Flocalhost:8000&width=120&layout=box_count&action=like&show_faces=true&share=true&height=80&appId" width="240" height="120" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+    {% endif %}
+</div>
