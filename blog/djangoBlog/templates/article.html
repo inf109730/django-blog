@@ -14,6 +14,14 @@
         {{article.content|safe}}
     </div>
     <hr>
+    <h4>Images</h4>
+    {% for image in images %}
+    <div style="margin-bottom:1.5em;">
+        <span>Description: {{image.description}}</span><br>
+        <img src="{{image.image.url}}" style="max-width:80%">
+    </div>
+    {% endfor %}
+    <hr>
     <div>
         Viewed: {{article.views}} times
     </div>
