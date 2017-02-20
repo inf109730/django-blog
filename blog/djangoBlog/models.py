@@ -10,6 +10,7 @@ class Blog(models.Model):
         ('Superhero', 'Superhero'),
         ('Cosmo', 'Cosmo'),
         ('Slate', 'Slate'),
+        ('United', 'United')
     )
     user = models.OneToOneField(User, related_name="account")
     header = models.ImageField(default='blank_header.jpg')

@@ -21,9 +21,28 @@
         <img src="{{image.image.url}}" style="max-width:80%">
     </div>
     {% endfor %}
-    <hr>
     <div>
         Viewed: {{article.views}} times
+    </div>
+    <hr>
+    <div>
+        <h3 class=title">Comments:</h3>
+        {% for comment in comments %}
+        <div>
+            <span>Author:  {{comment.user}}</span>
+            <span style="margin-left:2em;"> Time:  {{comment.created_date}}</span>
+            <div style="margin-top:1em;">{{comment.content}}</div>
+            <hr>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        <h4 class=title">Add comment:</h4>
+        <form action="." method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <textarea id="comment_content" name="comment_content" style="min-width:60%;min-height:4em;"></textarea>
+            <br><input type="submit" class="btn btn-primary submit-right" name="submit" style="margin-top:1em;" value="Add Comment"/>
+        </form>
     </div>
 </div>
 <div class="col-md-5">

@@ -11,6 +11,12 @@ def index(request):
                        .annotate(views=Count('view', distinct=True))[:5]
     news = News.objects.all().order_by('-created_date')[:5]
 
+    if str(request.user) != "AnonymousUser":
+        if Blog.objects.all().filter(user=request.user).count() != 1:
+            print('creating blog')
+            blog = Blog(user=request.user)
+            blog.save()
+
     for article_inst in article_list:
         article_inst.tag_list = article_inst.tags.all()
         article_inst.imagesCount = Image.objects.filter(article=article_inst).count()
@@ -34,6 +40,7 @@ def blog(request, blog_id):
 
     for article in articles:
         article.tag_list = article.tags.all()
+        article.imagesCount = Image.objects.filter(article=article).count()
 
     template = loader.get_template("blog.html")
     context = {
@@ -48,9 +55,16 @@ def blog(request, blog_id):
 
 def article(request, article_id):
     article_inst = Article.objects.get(pk=article_id)
+
+    if request.method == "POST":
+        comment_content = request.POST.get('comment_content')
+        comment = Comment(content=comment_content, article=article_inst, user=request.user)
+        comment.save()
+
     article_inst.tag_list = article_inst.tags.all()
     images = Image.objects.all().filter(article=article_inst)
     blog = article_inst.blog
+    comments = Comment.objects.all().filter(article=article_inst).order_by('created_date')
     view = View(article=article_inst)
     view.save()
     article_inst.views = View.objects.filter(article=article_inst).count()
@@ -58,6 +72,7 @@ def article(request, article_id):
     context = {
         'article': article_inst,
         'blog': blog,
+        'comments': comments,
         'images': images,
         'header': str(blog.user) + "'s blog",
         'header_url': "/blog/" + str(blog.id),
@@ -69,6 +84,9 @@ def article(request, article_id):
 def tag(request, tag_id):
     articles = Article.objects.all().filter(tags=tag_id).order_by('-publish_date')
     tag = Tag.objects.get(value=tag_id)
+    for article in articles:
+        article.tag_list = article.tags.all()
+        article.imagesCount = Image.objects.filter(article=article).count()
     template = loader.get_template("tag.html")
     context = {
         'articles': articles,
@@ -105,6 +123,17 @@ def profile(request):
 
     return HttpResponse(template.render(context, request))
 
+
+def delete_article(request):
+    if request.method == "GET":
+        return redirect("/")
+
+    id = request.POST.get('id')
+    article = Article.objects.get(id=id)
+    if article.blog.user == request.user:
+        article.delete()
+
+    return redirect("/profile")
 
 def add_article(request):
     user = request.user

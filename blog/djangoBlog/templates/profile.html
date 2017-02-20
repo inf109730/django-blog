@@ -58,7 +58,14 @@
                 {% endfor %}
             </td>
             <td>{{article.views}}</td>
-            <td>✕</td>
+            <td>
+                <form action="/delete-article" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{article.id}}">
+                <input type="submit" class="btn btn-primary submit-right"
+           name="submit" style="margin-top:1em;" value="✕"/>
+                </form>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
